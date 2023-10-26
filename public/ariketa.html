@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   
+    <script>
+
+        // see Constraint Validation API 
+        // https://developer.mozilla.org/en-US/docs/Web/API/Constraint_validation
+
+        let check =() => {
+        let bidaltzekoOK= true;
+
+        let izena = document.getElementById("izena");
+        izena.setCustomValidity("")
+        let izen = izena.value;
+        let izenRegex = /^[A-Z][a-z]+$/;
+        if (!izenRegex.test(izen)){
+            izena.setCustomValidity("Only letters are allowed and the first letter must be an uppercase letter");
+            bidaltzekoOK = false;
+        }else{
+            izena.setCustomValidity("");
+        }
+
+        let password = document.getElementById("password");
+        let pass = password.value;
+        let confpassword= document.getElementById("confpassword");
+        let confpass = confpassword.value;
+        if (pass != confpass ){
+            confpassword.setCustomValidity("Passwords don't mach")
+            bidaltzekoOK = false;
+        }else{
+            confpassword.setCustomValidity("");
+        }
+
+        let city = document.getElementById("city")
+       /*  if (!izenRegex.test(city.value)){
+            city.setCustomValidity("Only letters are allowed and the first letter must be an uppercase letter");
+            bidaltzekoOK = false;
+        } */
+        if (city.value.length <3){
+            city.setCustomValidity("City name must be at least 3 characters long");
+            bidaltzekoOK = false;
+        }else{
+            city.setCustomValidity("");
+        }
+
+        let zip = document.getElementById("zip");
+        let zenb = parseInt(zip.value)
+        if (isNaN(zenb)){
+            zip.setCustomValidity("Zip code must be a number");
+            bidaltzekoOK = false;
+        }else{
+            zip.setCustomValidity("");
+        }
+        return bidaltzekoOK;
+    }
+
+    window.onload =() => {
+        document.getElementById("izena").oninput= check;
+        document.getElementById("email").oninput = check;
+        document.getElementById("confpassword").oninput =check;
+        document.getElementById("city").oninput = check;
+        document.getElementById("zip").oninput = check;
+        document.querySelector("#formularioa").addEventListener("submit", (e) => {
+               e.preventDefault();
+                if (check()) e.target.submit();
+            });
+    }
+    </script>
+</head>
+<body>
+    <form action="/bezeroa" method="POST" id="formularioa">
+        Izena: <input type="text" name="izena" id="izena" required><br><br>
+        Email: <input type="email" name="email" id="email" required><br><br>
+        Gakoa: <input type="password" name="password" id= "password" ><br><br>
+        Gakoa konfirmatu: <input type="password" name="confpassword" id="confpassword" ><br><br>
+        Gender: <select id="gender" name="gender" >
+               <option value="Male"> Male</option>
+               <option value="Female"> Female</option>
+               <option value="Other">Other</option>
+        </select><br><br>
+        Date: <input type="date" id="date" name="date" required><br><br>
+        Address: <textarea id="adress" rows="5" cols="30"></textarea><br><br>
+        City: <input type="text" name="city" id="city" ><br><br>
+        Zip code: <input type="text" name="zip" id="zip" ><br><br>
+        I agree to the terms and conditions: <input type="checkbox" name="checkbox" required><br><br>
+        <fieldset style="width: 300px"><legend>I want to receive the newsletter: </legend>
+            <input type="radio" name="yes" checked>Yes</input>
+            <input type="radio" name="no">No</input><br><br>
+        
+         </fieldset>
+         <input type="submit" value="Bidali">
+    </form>
+</body>
+</html>
